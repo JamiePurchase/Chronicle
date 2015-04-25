@@ -7,7 +7,21 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class App extends Activity {
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class App extends Activity
+{
+    public static HttpClient client;
+    public static HttpPost post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +34,15 @@ public class App extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(new AppPanel(this));
+
+        HttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost("http://chronicle.co.nf/test1.php");
+
+        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
+        pairs.add(new BasicNameValuePair("key1", "value1"));
+        pairs.add(new BasicNameValuePair("key2", "value2"));
+        try {post.setEntity(new UrlEncodedFormEntity(pairs));}
+        catch (UnsupportedEncodingException e){}
     }
 
 

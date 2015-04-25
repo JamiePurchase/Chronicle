@@ -1,18 +1,27 @@
 package android.jp.chronicle;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import org.apache.http.HttpResponse;
+
+import java.io.IOException;
+
 public class AppPanel extends SurfaceView implements SurfaceHolder.Callback
 {
     public static final int WIDTH = 1280;
     public static final int HEIGHT = 800;
     private MainThread thread;
-    private Page page;
+    private static State state;
+
+    // Temp
+    public static Bitmap bkgTitle;
+    public static Bitmap bkgLibrary;
 
     public AppPanel(Context context)
     {
@@ -20,6 +29,10 @@ public class AppPanel extends SurfaceView implements SurfaceHolder.Callback
         getHolder().addCallback(this);
         thread = new MainThread(getHolder(), this);
         setFocusable(true);
+
+        // Temp
+        bkgTitle = BitmapFactory.decodeResource(getResources(), R.drawable.bkg2);
+        bkgLibrary = BitmapFactory.decodeResource(getResources(), R.drawable.bkg1);
     }
 
     @Override
@@ -31,7 +44,7 @@ public class AppPanel extends SurfaceView implements SurfaceHolder.Callback
         {
             final int savedState = canvas.save();
             canvas.scale(scaleFactorX, scaleFactorY);
-            page.draw(canvas);
+            state.draw(canvas);
             canvas.restoreToCount(savedState);
         }
     }
@@ -41,7 +54,12 @@ public class AppPanel extends SurfaceView implements SurfaceHolder.Callback
     {
         if(event.getAction()==MotionEvent.ACTION_DOWN)
         {
-            System.exit(0);
+            //System.exit(0);
+            state.touch(event);
+
+            /* HTTP CALL
+            try {HttpResponse response = App.client.execute(App.post);}
+            catch (IOException e) {e.printStackTrace();}*/
             return true;
         }
 
@@ -51,6 +69,11 @@ public class AppPanel extends SurfaceView implements SurfaceHolder.Callback
         }
 
         return super.onTouchEvent(event);
+    }
+
+    public static void setState(State newState)
+    {
+        state = newState;
     }
 
     @Override
@@ -78,14 +101,14 @@ public class AppPanel extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceCreated(SurfaceHolder holder)
     {
-        page = new Page(BitmapFactory.decodeResource(getResources(), R.drawable.bkg2));
+        setState(new StateTitle(bkgTitle));
         thread.setRunning(true);
         thread.start();
     }
 
     public void update()
     {
-        page.update();
+        state.update();
     }
 
 }
