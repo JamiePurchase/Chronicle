@@ -8,6 +8,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
+import java.io.File;
+import java.io.IOException;
+
 public class StateLibrary extends State
 {
 
@@ -23,7 +26,15 @@ public class StateLibrary extends State
 
     public void touch(MotionEvent event)
     {
-        System.exit(0);
+        //System.exit(0);
+
+        // Temp
+        File file = new File(AppPanel.getDataFolder(), "test.txt");
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void update()

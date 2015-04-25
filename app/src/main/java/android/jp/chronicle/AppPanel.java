@@ -10,6 +10,7 @@ import android.view.SurfaceView;
 
 import org.apache.http.HttpResponse;
 
+import java.io.File;
 import java.io.IOException;
 
 public class AppPanel extends SurfaceView implements SurfaceHolder.Callback
@@ -18,6 +19,7 @@ public class AppPanel extends SurfaceView implements SurfaceHolder.Callback
     public static final int HEIGHT = 800;
     private MainThread thread;
     private static State state;
+    private static File dataFolder;
 
     // Temp
     public static Bitmap bkgTitle;
@@ -30,8 +32,11 @@ public class AppPanel extends SurfaceView implements SurfaceHolder.Callback
         thread = new MainThread(getHolder(), this);
         setFocusable(true);
 
+        // Directory for Save/Load
+        dataFolder = context.getFilesDir();
+
         // Temp
-        bkgTitle = BitmapFactory.decodeResource(getResources(), R.drawable.bkg2);
+        bkgTitle = BitmapFactory.decodeResource(getResources(), R.drawable.bkg3);
         bkgLibrary = BitmapFactory.decodeResource(getResources(), R.drawable.bkg1);
     }
 
@@ -47,6 +52,11 @@ public class AppPanel extends SurfaceView implements SurfaceHolder.Callback
             state.draw(canvas);
             canvas.restoreToCount(savedState);
         }
+    }
+
+    public static File getDataFolder()
+    {
+        return dataFolder;
     }
 
     @Override
