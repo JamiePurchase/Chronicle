@@ -1,5 +1,6 @@
 package android.jp.chronicle;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -32,6 +33,22 @@ public class Drawing
         int[] rgb = getColour(colour);
         paint.setColor(Color.rgb(rgb[0], rgb[1], rgb[2]));
         return paint;
+    }
+
+    public static void imageDrawTile(Canvas canvas, Bitmap image, int sizeX, int sizeY)
+    {
+        int drawX = 0;
+        int drawY = 0;
+        while(drawX < AppPanel.WIDTH)
+        {
+            while(drawY < AppPanel.HEIGHT)
+            {
+                canvas.drawBitmap(image, drawX, drawY, null);
+                drawY = drawY + sizeY;
+            }
+            drawX = drawX + sizeX;
+            drawY = 0;
+        }
     }
 
     public static void rectDraw(Canvas canvas, Paint paint, int drawX, int drawY, int sizeX, int sizeY)

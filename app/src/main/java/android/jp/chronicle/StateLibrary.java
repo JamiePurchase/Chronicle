@@ -13,10 +13,13 @@ import java.io.IOException;
 
 public class StateLibrary extends State
 {
+    private Book[] books;
 
     public StateLibrary(Bitmap image)
     {
         setBackground(image);
+
+        // Temp
     }
 
     public void draw(Canvas canvas)
